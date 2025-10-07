@@ -1,4 +1,3 @@
-import { createStyles } from "@mantine/core";
 import {
   Badge,
   Button,
@@ -31,51 +30,7 @@ import userService from "../../services/user.service";
 import { getOAuthIcon, getOAuthUrl, unlinkOAuth } from "../../utils/oauth.util";
 import toast from "../../utils/toast.util";
 
-// Styles modernes pour glassmorphism et boutons
-const useStyles = createStyles((theme) => ({
-  glass: {
-    background: theme.colorScheme === 'dark'
-      ? 'rgba(30, 32, 40, 0.55)'
-      : 'rgba(255, 255, 255, 0.82)',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.13)',
-    backdropFilter: 'blur(16px) saturate(1.25)',
-    borderRadius: theme.radius.xl,
-    border: `1.5px solid ${theme.colorScheme === 'dark' ? 'rgba(255,255,255,0.10)' : 'rgba(0,0,0,0.06)'}`,
-    transition: 'box-shadow 0.2s',
-    marginBottom: theme.spacing.xl,
-  },
-  modernButton: {
-    borderRadius: theme.radius.xl,
-    boxShadow: '0 2px 8px 0 rgba(31, 38, 135, 0.10)',
-    transition: 'background 0.18s, box-shadow 0.18s, transform 0.12s',
-    fontWeight: 600,
-    letterSpacing: 0.2,
-    '&:hover': {
-      background: theme.fn.rgba(theme.colors[theme.primaryColor][6], 0.12),
-      boxShadow: '0 4px 16px 0 rgba(31, 38, 135, 0.16)',
-      transform: 'translateY(-2px) scale(1.03)',
-    },
-  },
-  sectionTitle: {
-    fontWeight: 700,
-    letterSpacing: 0.2,
-    marginBottom: theme.spacing.xs,
-  },
-  spaced: {
-    marginTop: theme.spacing.xl,
-    marginBottom: theme.spacing.xl,
-  },
-}));
-
 const Account = () => {
-  const { classes } = useStyles();
-    useEffect(() => {
-      const prev = document.body.style.background;
-      document.body.style.background = '';
-      return () => {
-        document.body.style.background = prev;
-      };
-    }, []);
   const [oauth, setOAuth] = useState<string[]>([]);
   const [oauthStatus, setOAuthStatus] = useState<Record<
     string,
@@ -181,12 +136,11 @@ const Account = () => {
   return (
     <>
       <Meta title={t("account.title")} />
-      <Container size="sm" className={classes.spaced}>
-        <Title order={3} mb="xs" className={classes.sectionTitle}>
+      <Container size="sm">
+        <Title order={3} mb="xs">
           <FormattedMessage id="account.title" />
         </Title>
-          <Paper withBorder p="xl" className={classes.glass}>
-            <div className={classes.glassContent}>
+        <Paper withBorder p="xl">
           <Title order={5} mb="xs">
             <FormattedMessage id="account.card.info.title" />
             {user?.isLdap ? (
@@ -217,17 +171,16 @@ const Account = () => {
               />
               {!user?.isLdap && (
                 <Group position="right">
-                  <Button type="submit" className={classes.modernButton}>
+                  <Button type="submit">
                     <FormattedMessage id="common.button.save" />
                   </Button>
                 </Group>
               )}
             </Stack>
           </form>
-            </div>
         </Paper>
         {user?.isLdap ? null : (
-          <Paper withBorder p="xl" mt="lg" className={classes.glass}>
+          <Paper withBorder p="xl" mt="lg">
             <Title order={5} mb="xs">
               <FormattedMessage id="account.card.password.title" />
             </Title>
@@ -259,7 +212,7 @@ const Account = () => {
                   {...passwordForm.getInputProps("password")}
                 />
                 <Group position="right">
-                  <Button type="submit" className={classes.modernButton}>
+                  <Button type="submit">
                     <FormattedMessage id="common.button.save" />
                   </Button>
                 </Group>
@@ -268,7 +221,7 @@ const Account = () => {
           </Paper>
         )}
         {oauth.length > 0 && (
-          <Paper withBorder p="xl" mt="lg" className={classes.glass}>
+          <Paper withBorder p="xl" mt="lg">
             <Title order={5} mb="xs">
               <FormattedMessage id="account.card.oauth.title" />
             </Title>
@@ -295,7 +248,6 @@ const Account = () => {
                     </Text>
                     {oauthStatus?.[provider] ? (
                       <Button
-                        className={classes.modernButton}
                         onClick={() => {
                           modals.openConfirmModal({
                             title: t("account.modal.unlink.title"),
@@ -326,7 +278,6 @@ const Account = () => {
                       </Button>
                     ) : (
                       <Button
-                        className={classes.modernButton}
                         component="a"
                         href={getOAuthUrl(window.location.origin, provider)}
                       >
@@ -339,7 +290,7 @@ const Account = () => {
             </Tabs>
           </Paper>
         )}
-  <Paper withBorder p="xl" mt="lg" className={classes.glass}>
+        <Paper withBorder p="xl" mt="lg">
           <Title order={5} mb="xs">
             <FormattedMessage id="account.card.security.title" />
           </Title>
@@ -384,7 +335,7 @@ const Account = () => {
                       />
 
                       <Group position="right">
-                        <Button color="red" type="submit" className={classes.modernButton}>
+                        <Button color="red" type="submit">
                           <FormattedMessage id="common.button.disable" />
                         </Button>
                       </Group>
@@ -417,7 +368,7 @@ const Account = () => {
                         {...enableTotpForm.getInputProps("password")}
                       />
                       <Group position="right">
-                        <Button type="submit" className={classes.modernButton}>
+                        <Button type="submit">
                           <FormattedMessage id="account.card.security.totp.button.start" />
                         </Button>
                       </Group>
@@ -428,13 +379,13 @@ const Account = () => {
             </Tabs.Panel>
           </Tabs>
         </Paper>
-  <Paper withBorder p="xl" mt="lg" className={classes.glass}>
+        <Paper withBorder p="xl" mt="lg">
           <Title order={5} mb="xs">
             <FormattedMessage id="account.card.language.title" />
           </Title>
           <LanguagePicker />
         </Paper>
-  <Paper withBorder p="xl" mt="lg" className={classes.glass}>
+        <Paper withBorder p="xl" mt="lg">
           <Title order={5} mb="xs">
             <FormattedMessage id="account.card.color.title" />
           </Title>
@@ -445,7 +396,6 @@ const Account = () => {
             <Button
               variant="light"
               color="red"
-              className={classes.modernButton}
               onClick={() =>
                 modals.openConfirmModal({
                   title: t("account.modal.delete.title"),
@@ -454,6 +404,7 @@ const Account = () => {
                       <FormattedMessage id="account.modal.delete.description" />
                     </Text>
                   ),
+
                   labels: {
                     confirm: t("common.button.delete"),
                     cancel: t("common.button.cancel"),

@@ -26,7 +26,7 @@ export default {
   "signin.title": "Content de vous revoir",
   "signin.description": "Vous n'avez pas encore de compte ?",
   "signin.button.signup": "S’inscrire",
-  "signin.input.email-or-username": "ezaeaz ou nom d'utilisateur",
+  "signin.input.email-or-username": "Courriel ou nom d'utilisateur",
   "signin.input.email-or-username.placeholder": "Votre courriel ou nom d'utilisateur",
   "signin.input.password": "Mot de passe",
   "signin.input.password.placeholder": "Votre mot de passe",
@@ -223,6 +223,7 @@ export default {
   // Dropzone.tsx
   "upload.dropzone.title": "Téléverser des fichiers",
   "upload.dropzone.description": "Glisser-déposer les fichiers ici pour commencer votre partage. Nous n'acceptons que les fichiers jusqu'à {maxSize} au total.",
+  "upload.dropzone.folders": "Glissez-déposez des dossiers entiers ici ou cliquez pour sélectionner des fichiers",
   "upload.dropzone.notify.file-too-big": "Vos fichiers dépassent la taille maximale de {maxSize}.",
   // FileList.tsx
   "upload.filelist.name": "Nom",

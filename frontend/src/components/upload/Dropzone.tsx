@@ -1,4 +1,4 @@
-import { Button, Center, createStyles, Group, Text } from "@mantine/core";
+import { Button, Center, createStyles, Group, Text, useMantineTheme } from "@mantine/core";
 import { Dropzone as MantineDropzone } from "@mantine/dropzone";
 import { ForwardedRef, useRef } from "react";
 import { TbCloudUpload, TbUpload } from "react-icons/tb";
@@ -127,6 +127,7 @@ const Dropzone = ({
   const t = useTranslate();
   const { classes, cx } = useStyles();
   const openRef = useRef<() => void>();
+  const theme = useMantineTheme(); // Ajoute cette ligne
 
   return (
     <div className={classes.wrapper}>
@@ -227,21 +228,33 @@ const Dropzone = ({
         {/* Contenu central */}
         <div className={classes.content}>
           <Group position="center">
-              <TbCloudUpload size={32} />
+            <TbCloudUpload
+              size={48}
+              style={{
+                color: theme.colorScheme === "dark" ? "#fff" : "#222", // Utilise Mantine theme
+              }}
+            />
           </Group>
-            <Text weight={700} size="md" mt="sm">
+          <Text
+            weight={700}
+            size="lg"
+            mt="md"
+            style={{
+              color: theme.colorScheme === "dark" ? "#fff" : "#222", // Utilise Mantine theme
+            }}
+          >
             {title || <FormattedMessage id="upload.dropzone.title" />}
           </Text>
-            <Text size="xs" mt="xs" color="dimmed">
+          <Text
+            size="md"
+            mt="md"
+            style={{
+              color: theme.colorScheme === "dark" ? "#bbb" : "#444", // Plus foncé selon le thème
+            }}
+          >
             <FormattedMessage
               id="upload.dropzone.description"
               values={{ maxSize: byteToHumanSizeString(maxShareSize) }}
-            />
-          </Text>
-            <Text size="xs" mt="xs" color="dimmed">
-            <FormattedMessage
-              id="upload.dropzone.folders"
-              defaultMessage="Drag entire folders here or click to select files"
             />
           </Text>
         </div>

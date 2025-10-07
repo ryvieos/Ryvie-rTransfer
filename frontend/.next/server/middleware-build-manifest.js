@@ -24,10 +24,15 @@ self.__BUILD_MANIFEST = {
       "static/chunks/main.js",
       "static/chunks/pages/account.js"
     ],
-    "/account/shares": [
+    "/auth/signIn": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/account/shares.js"
+      "static/chunks/pages/auth/signIn.js"
+    ],
+    "/auth/signUp": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/auth/signUp.js"
     ],
     "/upload": [
       "static/chunks/webpack.js",
