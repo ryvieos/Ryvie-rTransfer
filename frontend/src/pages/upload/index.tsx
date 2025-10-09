@@ -3,7 +3,7 @@ import { useModals } from "@mantine/modals";
 import { cleanNotifications } from "@mantine/notifications";
 import { AxiosError } from "axios";
 import pLimit from "p-limit";
-import { useEffect, useRef, useState, useMemo } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { FormattedMessage } from "react-intl";
 import Meta from "../../components/Meta";
 import Dropzone from "../../components/upload/Dropzone";
@@ -41,12 +41,18 @@ const Upload = ({
   const config = useConfig();
   const [files, setFiles] = useState<FileUpload[]>([]);
   const [isUploading, setisUploading] = useState(false);
-  
+
   // State for folder detection
   const [folderState, setFolderState] = useState<FolderUploadState>({
     items: [],
     folders: new Set<string>()
   });
+
+  // Animation state for "Partager" button
+  const [explode, setExplode] = useState(false);
+
+  // Animation state for explosion on main page after "Terminer"
+  const [showExplosion, setShowExplosion] = useState(false);
 
   useConfirmLeave({
     message: t("upload.notify.confirm-leave"),
@@ -138,6 +144,7 @@ const Upload = ({
     Promise.all(fileUploadPromises);
   };
 
+  // Callback for modal creation
   const showCreateUploadModalCallback = (files: FileUpload[]) => {
     showCreateUploadModal(
       modals,
@@ -165,25 +172,25 @@ const Upload = ({
       setFiles((oldArr) => [...oldArr, ...files]);
     }
   };
-  
+
   // Handle folder detection from the Dropzone component
   const handleFolderDetection = (items: UploadedItem[], folders: Set<string>) => {
     setFolderState(prevState => {
       // Create a new Set that includes both previous folders and new ones
       const mergedFolders = new Set<string>(prevState.folders);
       folders.forEach(folder => mergedFolders.add(folder));
-      
+
       // Merge items, preventing duplicates based on file name
       const existingFileNames = new Set(prevState.items.map(item => item.file.name));
       const newItems = items.filter(item => !existingFileNames.has(item.file.name));
-      
+
       return {
         items: [...prevState.items, ...newItems],
         folders: mergedFolders
       };
     });
   };
-  
+
   // Handle folder state updates from FileList
   const handleFoldersUpdated = (items: UploadedItem[], folders: Set<string>) => {
     // When folders are updated from FileList (like during deletion),
@@ -226,25 +233,26 @@ const Upload = ({
         .completeShare(createdShare.id)
         .then((share) => {
           setisUploading(false);
-          showCompletedUploadModal(modals, share);
+          showCompletedUploadModal(modals, share, () => {
+            setShowExplosion(true);
+            setTimeout(() => setShowExplosion(false), 1030); // 1030ms pour pas qu'il y ait de bug de réapparition de l'animation  il faut < 1050ms environ
+          });
           setFiles([]);
         })
         .catch(() => toast.error(t("upload.notify.generic-error")));
     }
   }, [files]);
 
+  // Fonction de clic avec animation
+  const handleShareClick = () => {
+    setExplode(true);
+    setTimeout(() => setExplode(false), 700); // durée de l'animation
+    showCreateUploadModalCallback(files);
+  };
+
   return (
     <>
       <Meta title={t("upload.title")} />
-      <Group position="right" mb={20}>
-        <Button
-          loading={isUploading}
-          disabled={files.length <= 0}
-          onClick={() => showCreateUploadModalCallback(files)}
-        >
-          <FormattedMessage id="common.button.share" />
-        </Button>
-      </Group>
       <Dropzone
         title={
           !autoOpenCreateUploadModal && files.length > 0
@@ -256,6 +264,94 @@ const Upload = ({
         onFilesChanged={handleDropzoneFilesChanged}
         onFolderDetection={handleFolderDetection}
       />
+      <style>
+        {`
+          .explode-anim {
+            animation: explodeYoupi 0.7s cubic-bezier(.42,2,.58,.5);
+            position: relative;
+            z-index: 1;
+          }
+          @keyframes explodeYoupi {
+            0% { box-shadow: 0 2px 12px 0 #7c5fff33; transform: scale(1); }
+            30% { box-shadow: 0 0 40px 10px #a992ff88, 0 0 80px 30px #7c5fff44; transform: scale(1.2); }
+            60% { box-shadow: 0 0 60px 30px #7c5fff88, 0 0 120px 60px #a992ff44; transform: scale(1.05); }
+            100% { box-shadow: 0 2px 12px 0 #7c5fff33; transform: scale(1); }
+          }
+          .explosion-effect {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #a992ff 0%, #7c5fff 60%, transparent 100%);
+            animation: explosionAnim 1.2s cubic-bezier(.42,2,.58,.5);
+            opacity: 0.8;
+          }
+          @keyframes explosionAnim {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            60% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+          }
+        `}
+      </style>
+      {showExplosion && (
+        <div className="explosion-effect">
+          <span
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              color: "#fff",
+              fontWeight: "bold",
+              fontSize: 32,
+              textShadow: "0 2px 12px #7c5fff, 0 0 20px #a992ff",
+              pointerEvents: "none",
+              userSelect: "none",
+            }}
+          >
+            Parfait&nbsp;!
+          </span>
+        </div>
+      )}
+      <div style={{ position: "relative", display: "flex", justifyContent: "center", marginBottom: 30, marginTop: 10 }}>
+        <Button
+          loading={isUploading}
+          disabled={files.length <= 0}
+          onClick={handleShareClick}
+          size="lg"
+          className={explode ? "explode-anim" : ""}
+          sx={theme => ({
+            borderRadius: 18,
+            padding: "0 2rem",
+            fontWeight: 600,
+            fontSize: 18,
+            background: theme.colorScheme === "dark"
+              ? "#7c5fff"
+              : "#a992ff",
+            color: theme.white,
+            boxShadow: "0 2px 12px 0 #7c5fff33",
+            border: "none",
+            transition: "transform 0.15s, box-shadow 0.15s, background 0.15s",
+            '&:hover': {
+              transform: 'scale(1.035)',
+              boxShadow: "0 4px 20px 0 #a992ff44",
+              background: theme.colorScheme === "dark"
+                ? "#a992ff"
+                : "#7c5fff",
+            },
+            '&:active': {
+              transform: 'scale(0.98)',
+            },
+          })}
+        >
+          <FormattedMessage id="common.button.share" />
+        </Button>
+      </div>
       {files.length > 0 && (
         <FileList 
           files={files} 

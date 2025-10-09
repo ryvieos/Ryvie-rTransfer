@@ -11,12 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const client_1 = require("@prisma/client");
 const getUser_decorator_1 = require("../auth/decorator/getUser.decorator");
 const isAdmin_guard_1 = require("../auth/guard/isAdmin.guard");
 const jwt_guard_1 = require("../auth/guard/jwt.guard");
@@ -75,7 +73,7 @@ __decorate([
     openapi.ApiResponse({ status: 200, type: require("./dto/user.dto").UserDTO }),
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_a = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _a : Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "getCurrentUser", null);
 __decorate([
@@ -85,7 +83,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _b : Object, updateOwnUser_dto_1.UpdateOwnUserDTO]),
+    __metadata("design:paramtypes", [Object, updateOwnUser_dto_1.UpdateOwnUserDTO]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "updateCurrentUser", null);
 __decorate([
@@ -96,7 +94,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_c = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _c : Object, Object]),
+    __metadata("design:paramtypes", [Object, Object]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "deleteCurrentUser", null);
 __decorate([

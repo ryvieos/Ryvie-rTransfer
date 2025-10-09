@@ -13,6 +13,7 @@ import CopyTextField from "../CopyTextField";
 const showCompletedUploadModal = (
   modals: ModalsContextProps,
   share: CompletedShare,
+  onDone?: () => void, // <-- Ajout
 ) => {
   const t = translateOutsideContext();
   return modals.openModal({
@@ -20,17 +21,16 @@ const showCompletedUploadModal = (
     withCloseButton: false,
     closeOnEscape: false,
     title: t("upload.modal.completed.share-ready"),
-    children: <Body share={share} />,
+    children: <Body share={share} onDone={onDone} />, // <-- Ajout
   });
 };
 
-const Body = ({ share }: { share: CompletedShare }) => {
+const Body = ({ share, onDone }: { share: CompletedShare; onDone?: () => void }) => {
   const modals = useModals();
   const router = useRouter();
   const t = useTranslate();
 
   const isReverseShare = !!router.query["reverseShareToken"];
-
   const link = `${window.location.origin}/s/${share.id}`;
 
   return (
@@ -55,16 +55,15 @@ const Body = ({ share }: { share: CompletedShare }) => {
           color: theme.colors.gray[6],
         })}
       >
-        {/* If our share.expiration is timestamp 0, show a different message */}
         {moment(share.expiration).unix() === 0
           ? t("upload.modal.completed.never-expires")
           : t("upload.modal.completed.expires-on", {
               expiration: moment(share.expiration).format("LLL"),
             })}
       </Text>
-
       <Button
         onClick={() => {
+          if (onDone) onDone(); // <-- Ajout
           modals.closeAll();
           if (isReverseShare) {
             router.reload();
