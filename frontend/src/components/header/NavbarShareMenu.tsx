@@ -5,7 +5,7 @@ import { FormattedMessage } from "react-intl";
 
 const NavbarShareMneu = () => {
   return (
-    <Menu position="bottom" align="center" withinPortal>
+    <Menu position="bottom-start" withinPortal>
       <Menu.Target>
         <ActionIcon>
           <TbLink />
