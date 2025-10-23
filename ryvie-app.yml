@@ -1,0 +1,6 @@
+manifestVersion: 1
+id: rtransfer
+category: automation
+name: rTransfer
+version: "0.0.0"
+port: 3011
