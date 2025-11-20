@@ -162,25 +162,7 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
       >
         <FormattedMessage id="signin.title" />
       </Title>
-      {config.get("share.allowRegistration") && (
-        <Text
-          color="#444"
-          size="lg"
-          align="center"
-          mt={5}
-          style={{ fontWeight: 500 }}
-        >
-          <FormattedMessage id="signin.description" />{" "}
-          <Anchor
-            component={Link}
-            href={"signUp"}
-            size="lg"
-            style={{ fontWeight: 600 }}
-          >
-            <FormattedMessage id="signin.button.signup" />
-          </Anchor>
-        </Text>
-      )}
+
       <div
         style={{
           position: "relative",
