@@ -162,29 +162,11 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
       >
         <FormattedMessage id="signin.title" />
       </Title>
-      {config.get("share.allowRegistration") && (
-        <Text
-          color="#444"
-          size="lg"
-          align="center"
-          mt={5}
-          style={{ fontWeight: 500 }}
-        >
-          <FormattedMessage id="signin.description" />{" "}
-          <Anchor
-            component={Link}
-            href={"signUp"}
-            size="lg"
-            style={{ fontWeight: 600 }}
-          >
-            <FormattedMessage id="signin.button.signup" />
-          </Anchor>
-        </Text>
-      )}
+
       <div
         style={{
           position: "relative",
-          marginTop: 30,
+          marginTop: 60, // augmenté de 40 -> 60 pour abaisser encore un peu
           display: "flex",
           justifyContent: "center",
         }}
@@ -203,7 +185,7 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
             pointerEvents: "none",
             borderRadius: 24,
             boxShadow: beamActive
-              ? "0 0 80px 32px #a992ff77, 0 0 48px 16px #a992ff44"
+              ? "0 0 32px 12px #a992ff33, 0 0 20px 8px #a992ff22" // réduit ici
               : "0 0 48px 16px #a992ff55, 0 0 24px 8px #a992ff33",
             transition: "box-shadow 0.25s cubic-bezier(.42,2,.58,.5)",
           }}
