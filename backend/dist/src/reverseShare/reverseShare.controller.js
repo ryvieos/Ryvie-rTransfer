@@ -11,13 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReverseShareController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
-const client_1 = require("@prisma/client");
 const getUser_decorator_1 = require("../auth/decorator/getUser.decorator");
 const jwt_guard_1 = require("../auth/guard/jwt.guard");
 const config_service_1 = require("../config/config.service");
@@ -57,7 +55,7 @@ __decorate([
     __param(0, (0, common_1.Body)()),
     __param(1, (0, getUser_decorator_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [createReverseShare_dto_1.CreateReverseShareDTO, typeof (_a = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _a : Object]),
+    __metadata("design:paramtypes", [createReverseShare_dto_1.CreateReverseShareDTO, Object]),
     __metadata("design:returntype", Promise)
 ], ReverseShareController.prototype, "create", null);
 __decorate([
@@ -80,7 +78,7 @@ __decorate([
     openapi.ApiResponse({ status: 200, type: [require("./dto/reverseShareTokenWithShares").ReverseShareTokenWithShares] }),
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _b : Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], ReverseShareController.prototype, "getAllByUser", null);
 __decorate([

@@ -11,13 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c, _d;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
 const throttler_1 = require("@nestjs/throttler");
-const client_1 = require("@prisma/client");
 const config_service_1 = require("../config/config.service");
 const auth_service_1 = require("./auth.service");
 const authTotp_service_1 = require("./authTotp.service");
@@ -189,7 +187,7 @@ __decorate([
     __param(1, (0, common_1.Res)({ passthrough: true })),
     __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_a = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _a : Object, Object, updatePassword_dto_1.UpdatePasswordDTO]),
+    __metadata("design:paramtypes", [Object, Object, updatePassword_dto_1.UpdatePasswordDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "updatePassword", null);
 __decorate([
@@ -218,7 +216,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _b : Object, enableTotp_dto_1.EnableTotpDTO]),
+    __metadata("design:paramtypes", [Object, enableTotp_dto_1.EnableTotpDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "enableTotp", null);
 __decorate([
@@ -228,7 +226,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_c = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _c : Object, verifyTotp_dto_1.VerifyTotpDTO]),
+    __metadata("design:paramtypes", [Object, verifyTotp_dto_1.VerifyTotpDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "verifyTotp", null);
 __decorate([
@@ -238,7 +236,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_d = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _d : Object, verifyTotp_dto_1.VerifyTotpDTO]),
+    __metadata("design:paramtypes", [Object, verifyTotp_dto_1.VerifyTotpDTO]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "disableTotp", null);
 exports.AuthController = AuthController = __decorate([

@@ -1,7 +1,7 @@
 import { ShareDTO } from "./share.dto";
 import { FileDTO } from "../../file/dto/file.dto";
 import { MyShareSecurityDTO } from "./myShareSecurity.dto";
-declare const MyShareDTO_base: import("@nestjs/common").Type<Omit<ShareDTO, "from" | "fromList" | "files">>;
+declare const MyShareDTO_base: import("@nestjs/common").Type<Omit<ShareDTO, "files" | "from" | "fromList">>;
 export declare class MyShareDTO extends MyShareDTO_base {
     views: number;
     createdAt: Date;

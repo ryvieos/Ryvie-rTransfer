@@ -107,6 +107,16 @@ const useStyles = createStyles((theme) => ({
         theme.colors[theme.primaryColor][theme.colorScheme === "dark" ? 3 : 7],
     },
   },
+
+  // nouveau : centre le logo + nom
+  centerBrand: {
+    position: "absolute",
+    left: "50%",
+    top: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 2,
+    cursor: "pointer",
+  },
 }));
 
 const Header = () => {
@@ -136,12 +146,8 @@ const Header = () => {
     },
   ];
 
-  let unauthenticatedLinks: NavLink[] = [
-    {
-      link: "/auth/signIn",
-      label: t("navbar.signin"),
-    },
-  ];
+  // remplace la déclaration précédente qui contenait le lien signIn
+  let unauthenticatedLinks: NavLink[] = [];
 
   if (config.get("share.allowUnauthenticatedShares")) {
     unauthenticatedLinks.unshift({
@@ -149,18 +155,6 @@ const Header = () => {
       label: t("navbar.upload"),
     });
   }
-
-  if (config.get("general.showHomePage"))
-    unauthenticatedLinks.unshift({
-      link: "/",
-      label: t("navbar.home"),
-    });
-
-  if (config.get("share.allowRegistration"))
-    unauthenticatedLinks.push({
-      link: "/auth/signUp",
-      label: t("navbar.signup"),
-    });
 
   const { classes, cx } = useStyles();
   const items = (
@@ -192,11 +186,12 @@ const Header = () => {
     <MantineHeader height={HEADER_HEIGHT} mb={40} className={classes.root}>
       <Container className={classes.header}>
         <Link href="/" passHref>
-          <Group>
+          <Group className={classes.centerBrand}>
             <Logo height={35} width={35} />
             <Text weight={600}>{config.get("general.appName")}</Text>
           </Group>
         </Link>
+
         <Group spacing={5} className={classes.links}>
           <Group>{items} </Group>
         </Group>

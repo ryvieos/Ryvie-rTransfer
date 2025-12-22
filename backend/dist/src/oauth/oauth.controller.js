@@ -11,12 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OAuthController = void 0;
 const openapi = require("@nestjs/swagger");
 const common_1 = require("@nestjs/common");
-const client_1 = require("@prisma/client");
 const nanoid_1 = require("nanoid");
 const auth_service_1 = require("../auth/auth.service");
 const getUser_decorator_1 = require("../auth/decorator/getUser.decorator");
@@ -84,7 +82,7 @@ __decorate([
     openapi.ApiResponse({ status: 200 }),
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_a = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _a : Object]),
+    __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], OAuthController.prototype, "status", null);
 __decorate([
@@ -119,7 +117,7 @@ __decorate([
     __param(0, (0, getUser_decorator_1.GetUser)()),
     __param(1, (0, common_1.Param)("provider")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_b = typeof client_1.User !== "undefined" && client_1.User) === "function" ? _b : Object, String]),
+    __metadata("design:paramtypes", [Object, String]),
     __metadata("design:returntype", void 0)
 ], OAuthController.prototype, "unlink", null);
 exports.OAuthController = OAuthController = __decorate([

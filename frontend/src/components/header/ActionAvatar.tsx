@@ -9,7 +9,7 @@ const ActionAvatar = () => {
   const { user } = useUser();
 
   return (
-    <Menu position="bottom-start" withinPortal>
+  <Menu position="bottom" withinPortal>
       <Menu.Target>
         <ActionIcon>
           <Avatar size={28} />

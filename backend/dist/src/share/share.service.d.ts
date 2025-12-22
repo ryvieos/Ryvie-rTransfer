@@ -80,8 +80,8 @@ export declare class ShareService {
             name: string;
             id: string;
             createdAt: Date;
-            size: string;
             shareId: string;
+            size: string;
         }[];
         name: string | null;
         id: string;
@@ -107,8 +107,8 @@ export declare class ShareService {
             name: string;
             id: string;
             createdAt: Date;
-            size: string;
             shareId: string;
+            size: string;
         }[];
         name: string | null;
         id: string;
