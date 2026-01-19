@@ -1,7 +1,7 @@
 services:
-  pingvin-share:
+  rtransfer:
     container_name: app-rtransfer
-    build: .
+    image: julescloud/rtransfer:v0.0.1
     restart: unless-stopped
     ports:
       - 3011:3000

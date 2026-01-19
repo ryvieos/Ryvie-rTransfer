@@ -1,5 +1,5 @@
 {
-  "name": "pingvin-share-backend",
+  "name": "rtransfer-backend",
   "version": "1.10.3",
   "scripts": {
     "build": "nest build",
