@@ -100,7 +100,7 @@ ldap:
   bindDn: cn=admin,dc=example,dc=org
   bindPassword: ""
   searchBase: ou=users,dc=example,dc=org
-  searchQuery: (uid=%username%)
+  searchQuery: (|(uid=%username%)(mail=%username%)(cn=%username%)(uid=%username%@*)(mail=%username%@*))
   adminGroups: admins
   fieldNameMemberOf: memberOf
   fieldNameEmail: mail

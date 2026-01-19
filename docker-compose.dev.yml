@@ -18,7 +18,7 @@ services:
       - .env
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=file:./data/pingvin-share.db
+      - DATABASE_URL=file:./data/rtransfer.db
     networks:
       - rtransfer-dev
       - ldap_my_custom_network
