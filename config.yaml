@@ -98,7 +98,7 @@ ldap:
   enabled: "true"
   url: ldap://openldap:1389
   bindDn: cn=admin,dc=example,dc=org
-  bindPassword: adminpassword
+  bindPassword: ""
   searchBase: ou=users,dc=example,dc=org
   searchQuery: (uid=%username%)
   adminGroups: admins

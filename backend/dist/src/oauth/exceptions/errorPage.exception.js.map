@@ -1,1 +1,0 @@
-{"version":3,"file":"errorPage.exception.js","sourceRoot":"","sources":["../../../../src/oauth/exceptions/errorPage.exception.ts"],"names":[],"mappings":";;;AAAA,MAAa,kBAAmB,SAAQ,KAAK;IAO3C,YACkB,MAAc,SAAS,EACvB,QAAiB,EACjB,MAAiB;QAEjC,KAAK,CAAC,OAAO,CAAC,CAAC;QAJC,QAAG,GAAH,GAAG,CAAoB;QACvB,aAAQ,GAAR,QAAQ,CAAS;QACjB,WAAM,GAAN,MAAM,CAAW;IAGnC,CAAC;CACF;AAdD,gDAcC"}

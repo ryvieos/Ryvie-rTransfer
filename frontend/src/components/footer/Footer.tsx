@@ -34,7 +34,7 @@ const Footer = () => {
             href="https://github.com/maisonnavejul/Ryvie-rTransfer.git"
             target="_blank"
           >
-            Jules Maisonnave
+            Ryvie
           </Anchor>
         </Text>
         <div>

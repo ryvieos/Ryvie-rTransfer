@@ -1,0 +1,23 @@
+FROM node:20-alpine
+
+RUN apk add --no-cache python3 openssl
+
+WORKDIR /opt/app
+
+# Install dependencies for both frontend and backend
+COPY backend/package*.json ./backend/
+COPY frontend/package*.json ./frontend/
+
+RUN cd backend && npm install
+RUN cd frontend && npm install
+
+# Copy source code
+COPY backend ./backend
+COPY frontend ./frontend
+
+# Generate Prisma client
+RUN cd backend && npx prisma generate
+
+EXPOSE 3000 8080
+
+CMD ["sh", "-c", "cd /opt/app/backend && npm run dev & cd /opt/app/frontend && npm run dev"]

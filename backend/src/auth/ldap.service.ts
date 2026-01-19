@@ -26,9 +26,10 @@ export class LdapService {
     const bindDn = this.serviceConfig.get("ldap.bindDn") || null;
     if (bindDn) {
       try {
+        const bindPassword = process.env.LDAP_BIND_PASSWORD || this.serviceConfig.get("ldap.bindPassword");
         await ldapClient.bind(
           bindDn,
-          this.serviceConfig.get("ldap.bindPassword"),
+          bindPassword,
         );
       } catch (error) {
         this.logger.warn(`Failed to bind to default user: ${error}`);
