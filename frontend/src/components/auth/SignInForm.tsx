@@ -79,6 +79,7 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
   const [oauthProviders, setOauthProviders] = useState<string[] | null>(null);
   const [isRedirectingToOauthProvider, setIsRedirectingToOauthProvider] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validationSchema = yup.object().shape({
     emailOrUsername: yup.string().required(t("common.error.field-required")),
@@ -94,29 +95,31 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
   });
 
   const signIn = async (email: string, password: string) => {
-    await authService
-      .signIn(email.trim(), password.trim())
-      .then(async (response) => {
-        if (response.data["loginToken"]) {
-          // Prompt the user to enter their totp code
-          showNotification({
-            icon: <TbInfoCircle />,
-            color: "blue",
-            radius: "md",
-            title: t("signIn.notify.totp-required.title"),
-            message: t("signIn.notify.totp-required.description"),
-          });
-          router.push(
-            `/auth/totp/${
-              response.data["loginToken"]
-            }?redirect=${encodeURIComponent(redirectPath)}`,
-          );
-        } else {
-          await refreshUser();
-          router.replace(safeRedirectPath(redirectPath));
-        }
-      })
-      .catch(toast.axiosError);
+    setIsLoading(true);
+    try {
+      const response = await authService.signIn(email.trim(), password.trim());
+      if (response.data["loginToken"]) {
+        // Prompt the user to enter their totp code
+        showNotification({
+          icon: <TbInfoCircle />,
+          color: "blue",
+          radius: "md",
+          title: t("signIn.notify.totp-required.title"),
+          message: t("signIn.notify.totp-required.description"),
+        });
+        router.push(
+          `/auth/totp/${
+            response.data["loginToken"]
+          }?redirect=${encodeURIComponent(redirectPath)}`,
+        );
+      } else {
+        await refreshUser();
+        router.replace(safeRedirectPath(redirectPath));
+      }
+    } catch (error) {
+      toast.axiosError(error);
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -233,6 +236,8 @@ const SignInForm = ({ redirectPath }: { redirectPath: string }) => {
                 type="submit"
                 size="lg"
                 radius="xl"
+                loading={isLoading}
+                disabled={isLoading}
                 style={{
                   fontWeight: 700,
                   fontSize: "1.2rem",

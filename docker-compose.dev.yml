@@ -1,6 +1,83 @@
 services:
+  backend:
+    container_name: app-rtransfer-backend-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: sh -c "cd /opt/app/backend && npx prisma migrate deploy && npx prisma db seed && npm run dev"
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./backend/src:/opt/app/backend/src
+      - ./backend/prisma:/opt/app/backend/prisma
+      - ./data:/opt/app/backend/data
+      - ./config.yaml:/opt/app/config.yaml
+      - /opt/app/backend/node_modules
+      - /opt/app/backend/dist
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=file:./data/pingvin-share.db
+    networks:
+      - rtransfer-dev
+      - ldap_my_custom_network
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+  frontend:
+    container_name: app-rtransfer-frontend-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: sh -c "cd /opt/app/frontend && npm run dev"
+    ports:
+      - "3011:3000"
+    volumes:
+      - ./frontend/src:/opt/app/frontend/src
+      - ./frontend/public:/opt/app/frontend/public
+      - /opt/app/frontend/node_modules
+      - /opt/app/frontend/.next
+    environment:
+      - NODE_ENV=development
+      - API_URL=http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - rtransfer-dev
+    restart: "no"
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
   clamav:
-    restart: unless-stopped
+    container_name: app-rtransfer-clamav-dev
+    restart: "no"
     ports:
       - 3310:3310
     image: clamav/clamav
+    networks:
+      - rtransfer-dev
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
+networks:
+  rtransfer-dev:
+    driver: bridge
+  ldap_my_custom_network:
+    external: true
