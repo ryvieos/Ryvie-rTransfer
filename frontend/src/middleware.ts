@@ -11,6 +11,23 @@ export const config = {
   matcher: "/((?!api|static|.*\\..*|_next).*)",
 };
 
+async function fetchConfigWithRetry(apiUrl: string, maxRetries = 5, delay = 1000) {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      const response = await fetch(`${apiUrl}/api/configs`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      if (i === maxRetries - 1) throw error;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+  throw new Error("Failed to fetch config after retries");
+}
+
 export async function middleware(request: NextRequest) {
   const routes = {
     unauthenticated: new Routes(["/auth/*", "/"]),
@@ -29,7 +46,7 @@ export async function middleware(request: NextRequest) {
 
   // Get config from backend
   const apiUrl = process.env.API_URL || "http://localhost:8080";
-  const config = await (await fetch(`${apiUrl}/api/configs`)).json();
+  const config = await fetchConfigWithRetry(apiUrl);
 
   const getConfig = (key: string) => {
     return configService.get(key, config);
@@ -104,8 +121,12 @@ export async function middleware(request: NextRequest) {
     },
     // Home page
     {
-      condition: (!getConfig("general.showHomePage") || user) && route == "/",
+      condition: user && route == "/",
       path: "/upload",
+    },
+    {
+      condition: !user && route == "/",
+      path: "/auth/signIn",
     },
     // Imprint redirect
     {
